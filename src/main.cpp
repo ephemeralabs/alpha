@@ -42,7 +42,7 @@ int main()
     wiringPiSetup();
 
     run.store(true);
-    std::thread working_thread(&blink, 0);
+    std::thread working_thread(&blink, 5);
     signal(SIGINT, signal_handler_callback);
 
     std::unique_lock<std::mutex> lck(run_mtx);
