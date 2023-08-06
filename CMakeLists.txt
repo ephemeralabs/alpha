@@ -5,5 +5,9 @@ cmake_minimum_required(VERSION 3.0)
 project(alpha)
 
 # Build WiringPi
-include(${CMAKE_SOURCE_DIR}/cmake/wiringpi.cmake)
-build_wiringpi()
+add_subdirectory(${PROJECT_SOURCE_DIR}/wiringpi)
+set(WIRINGPI_FOUND TRUE)
+
+# Build app
+add_executable(alpha src/main.cpp)
+target_link_libraries(alpha wiringpi)
