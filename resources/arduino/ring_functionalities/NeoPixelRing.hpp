@@ -17,11 +17,21 @@ public:
     NeoPixelRing(
             uint16_t num_pixels,
             int16_t pin)
+        : NeoPixelRing(num_pixels, pin, max_brightness())
+    {
+    }
+
+    NeoPixelRing(
+            uint16_t num_pixels,
+            int16_t pin,
+            uint8_t default_brightness)
         : num_pixels_(num_pixels)
         , pin_(pin)
+        , default_brightness_(default_brightness)
         , pixels_(num_pixels_, pin_, NEO_GRB + NEO_KHZ800)
     {
         pixels_.begin();
+        pixels_.setBrightness(default_brightness_);
     }
 
     ~NeoPixelRing()
@@ -33,6 +43,12 @@ public:
     void off()
     {
         fill_all(0, 0, 0);
+    }
+
+    void carousel(
+        unsigned long delay_ms)
+    {
+        carousel(255, 255, 255, delay_ms);
     }
 
     void carousel(
@@ -57,6 +73,12 @@ public:
     }
 
     void blink(
+        unsigned long delay_ms)
+    {
+        blink(255, 255, 255, delay_ms);
+    }
+
+    void blink(
         uint8_t red,
         uint8_t green,
         uint8_t blue,
@@ -66,6 +88,12 @@ public:
         delay(period_ms);
         off();
         delay(period_ms);
+    }
+
+    void fade_in(
+        unsigned long delay_ms)
+    {
+        fade_in(255, 255, 255, default_brightness_, delay_ms);
     }
 
     void fade_in(
@@ -86,6 +114,12 @@ public:
             fill_all(red, green, blue, brightness);
             delay(delay_ms);
         }
+    }
+
+    void fade_out(
+        unsigned long delay_ms)
+    {
+        fade_out(255, 255, 255, default_brightness_, delay_ms);
     }
 
     void fade_out(
@@ -113,7 +147,7 @@ public:
         uint8_t green,
         uint8_t blue)
     {
-        fill_all(red, green, blue, pixels_.getBrightness());
+        fill_all(red, green, blue, default_brightness_);
     }
 
     fill_all(
@@ -137,7 +171,7 @@ public:
         uint8_t green,
         uint8_t blue)
     {
-        fill(pixel, red, green, blue, pixels_.getBrightness());
+        fill(pixel, red, green, blue, default_brightness_);
     }
 
     fill(
@@ -152,11 +186,18 @@ public:
         pixels_.show();
     }
 
+    static constexpr uint8_t max_brightness()
+    {
+        return 255;
+    }
+
 private:
 
     uint16_t num_pixels_;
 
     int16_t pin_;
+
+    uint8_t default_brightness_;
 
     Adafruit_NeoPixel pixels_;
 };
