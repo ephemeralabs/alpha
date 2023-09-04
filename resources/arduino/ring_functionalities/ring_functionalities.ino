@@ -20,19 +20,19 @@ void loop()
     // Three iterations of green carousel
     for (size_t i = 0; i < 3; i++)
     {
-        ring.carousel(0, 1, 0, 100);
+        ring.carousel(255, 255, 255, 100);
     }
 
     // Three iterations of red blinking
     for (size_t i = 0; i < 3; i++)
     {
-        ring.blink(1, 0, 0, 800);
+        ring.blink(255, 255, 255, 800);
     }
 
     // Three iterations of red fading in and out
     for (size_t i = 0; i < 3; i++)
     {
-        ring.fade_in(0, 0, 255, 100, 2500);
-        ring.fade_out(0, 0, 255, 100, 2500);
+        ring.fade_in(255, 255, 255, 100, 2500);
+        ring.fade_out(255, 255, 255, 100, 2500);
     }
 }
