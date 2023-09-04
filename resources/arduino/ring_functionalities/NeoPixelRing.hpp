@@ -75,8 +75,8 @@ public:
         uint8_t max_brightness,
         unsigned long duration_ms)
     {
-        auto brightness_step = duration_ms / max_brightness;
-        unsigned long num_steps = max_brightness / brightness_step;
+        auto brightness_step = 1;
+        auto num_steps = max_brightness;
         unsigned long delay_ms = duration_ms / num_steps;
 
         off();
@@ -95,8 +95,8 @@ public:
         uint8_t max_brightness,
         unsigned long duration_ms)
     {
-        auto brightness_step = duration_ms / max_brightness;
-        unsigned long num_steps = max_brightness / brightness_step;
+        auto brightness_step = 1;
+        auto num_steps = max_brightness;
         unsigned long delay_ms = duration_ms / num_steps;
 
         fill_all(red, green, blue, max_brightness);
