@@ -17,8 +17,6 @@ constexpr unsigned long FADE_DELAY = 3000;
 
 void setup()
 {
-    Serial.begin(115200);
-    while(!Serial);
 }
 
 void loop()
