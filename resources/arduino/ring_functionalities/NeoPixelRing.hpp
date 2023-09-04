@@ -30,6 +30,11 @@ public:
         pixels_.show();
     }
 
+    void off()
+    {
+        fill_all(0, 0, 0);
+    }
+
     void carousel(
         uint8_t red,
         uint8_t green,
@@ -103,13 +108,6 @@ public:
         }
     }
 
-private:
-
-    void off()
-    {
-        fill_all(0, 0, 0);
-    }
-
     fill_all(
         uint8_t red,
         uint8_t green,
@@ -153,6 +151,8 @@ private:
         pixels_.setBrightness(brightness);
         pixels_.show();
     }
+
+private:
 
     uint16_t num_pixels_;
 
