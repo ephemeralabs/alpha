@@ -84,6 +84,7 @@ public:
         uint8_t blue,
         unsigned long period_ms)
     {
+        off();
         fill_all(red, green, blue);
         delay(period_ms);
         off();
@@ -133,6 +134,7 @@ public:
         auto num_steps = max_brightness;
         unsigned long delay_ms = duration_ms / num_steps;
 
+        off();
         fill_all(red, green, blue, max_brightness);
 
         for (uint8_t brightness = max_brightness; brightness != 0; brightness -= brightness_step)
@@ -142,7 +144,7 @@ public:
         }
     }
 
-    fill_all(
+    void fill_all(
         uint8_t red,
         uint8_t green,
         uint8_t blue)
@@ -150,7 +152,7 @@ public:
         fill_all(red, green, blue, default_brightness_);
     }
 
-    fill_all(
+    void fill_all(
         uint8_t red,
         uint8_t green,
         uint8_t blue,
@@ -165,7 +167,7 @@ public:
         pixels_.show();
     }
 
-    fill(
+    void fill(
         uint16_t pixel,
         uint8_t red,
         uint8_t green,
@@ -174,7 +176,7 @@ public:
         fill(pixel, red, green, blue, default_brightness_);
     }
 
-    fill(
+    void fill(
         uint16_t pixel,
         uint8_t red,
         uint8_t green,
