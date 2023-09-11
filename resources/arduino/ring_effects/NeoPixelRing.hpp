@@ -48,53 +48,85 @@ public:
     void carousel(
         unsigned long delay_ms)
     {
-        carousel(255, 255, 255, delay_ms);
+        carousel(255, 255, 255, delay_ms, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void carousel(
+        unsigned long delay_ms,
+        bool (*stop_predicate)())
+    {
+        carousel(255, 255, 255, delay_ms, stop_predicate);
     }
 
     void carousel(
         uint8_t red,
         uint8_t green,
         uint8_t blue,
-        unsigned long delay_ms)
+        unsigned long delay_ms,
+        bool (*stop_predicate)())
     {
         off();
 
-        for(auto pixel = 0; pixel < num_pixels_; pixel++)
+        for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
         {
             fill(pixel, red, green, blue);
-            delay(delay_ms);
+            step_delay(delay_ms, 10, stop_predicate);
         }
 
-        for(auto pixel = 0; pixel < num_pixels_; pixel++)
+        for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
         {
             fill(pixel, 0, 0, 0);
-            delay(delay_ms);
+            step_delay(delay_ms, 10, stop_predicate);
         }
     }
 
     void blink(
         unsigned long delay_ms)
     {
-        blink(255, 255, 255, delay_ms);
+        blink(255, 255, 255, delay_ms, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void blink(
+        unsigned long delay_ms,
+        bool (*stop_predicate)())
+    {
+        blink(255, 255, 255, delay_ms, stop_predicate);
     }
 
     void blink(
         uint8_t red,
         uint8_t green,
         uint8_t blue,
-        unsigned long period_ms)
+        unsigned long period_ms,
+        bool (*stop_predicate)())
     {
         off();
         fill_all(red, green, blue);
-        delay(period_ms);
+        step_delay(period_ms, 10, stop_predicate);
         off();
-        delay(period_ms);
+        step_delay(period_ms, 10, stop_predicate);
     }
 
     void fade_in(
         unsigned long delay_ms)
     {
-        fade_in(255, 255, 255, default_brightness_, delay_ms);
+        fade_in(255, 255, 255, default_brightness_, delay_ms, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void fade_in(
+        unsigned long delay_ms,
+        bool (*stop_predicate)())
+    {
+        fade_in(255, 255, 255, default_brightness_, delay_ms, stop_predicate);
     }
 
     void fade_in(
@@ -102,7 +134,8 @@ public:
         uint8_t green,
         uint8_t blue,
         uint8_t max_brightness,
-        unsigned long duration_ms)
+        unsigned long duration_ms,
+        bool (*stop_predicate)())
     {
         auto brightness_step = 1;
         auto num_steps = max_brightness;
@@ -110,7 +143,7 @@ public:
 
         off();
 
-        for (uint8_t brightness = 0; brightness < max_brightness; brightness += brightness_step)
+        for (uint8_t brightness = 0; brightness < max_brightness && !(*stop_predicate)(); brightness += brightness_step)
         {
             fill_all(red, green, blue, brightness);
             delay(delay_ms);
@@ -120,7 +153,17 @@ public:
     void fade_out(
         unsigned long delay_ms)
     {
-        fade_out(255, 255, 255, default_brightness_, delay_ms);
+        fade_out(255, 255, 255, default_brightness_, delay_ms, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void fade_out(
+        unsigned long delay_ms,
+        bool (*stop_predicate)())
+    {
+        fade_out(255, 255, 255, default_brightness_, delay_ms, stop_predicate);
     }
 
     void fade_out(
@@ -128,7 +171,8 @@ public:
         uint8_t green,
         uint8_t blue,
         uint8_t max_brightness,
-        unsigned long duration_ms)
+        unsigned long duration_ms,
+        bool (*stop_predicate)())
     {
         auto brightness_step = 1;
         auto num_steps = max_brightness;
@@ -137,7 +181,7 @@ public:
         off();
         fill_all(red, green, blue, max_brightness);
 
-        for (uint8_t brightness = max_brightness; brightness != 0; brightness -= brightness_step)
+        for (uint8_t brightness = max_brightness; brightness != 0 && !(*stop_predicate)(); brightness -= brightness_step)
         {
             fill_all(red, green, blue, brightness);
             delay(delay_ms);
@@ -191,6 +235,21 @@ public:
     static constexpr uint8_t max_brightness()
     {
         return 255;
+    }
+
+protected:
+
+    void step_delay(
+        unsigned long total_delay_ms,
+        unsigned long delay_step,
+        bool (*stop_predicate)())
+    {
+        unsigned long remaining_delay = total_delay_ms;
+        while (remaining_delay > 0 && !(*stop_predicate)())
+        {
+            delay(remaining_delay >= delay_step ? delay_step : remaining_delay);
+            remaining_delay = remaining_delay - delay_step;
+        }
     }
 
 private:

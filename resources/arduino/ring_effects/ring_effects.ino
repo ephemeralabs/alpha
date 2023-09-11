@@ -46,6 +46,8 @@
  *
  */
 
+#include <util/atomic.h>
+
 #include "EffectState.hpp"
 #include "NeoPixelRing.hpp"
 
@@ -101,6 +103,12 @@ void update_effect_state()
     Serial.println(ephemera::alpha::print_effect_state(effect_state));
 }
 
+bool get_button_pressed_atomic()
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE);
+    return button_pressed;
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -124,14 +132,14 @@ void loop()
         ring.off();
         break;
     case ephemera::alpha::EffectState::CAROUSEL_STATE:
-        ring.carousel(CAROUSEL_DELAY);
+        ring.carousel(CAROUSEL_DELAY, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::BLINK_STATE:
-        ring.blink(BLINK_DELAY);
+        ring.blink(BLINK_DELAY, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::FADE_STATE:
-        ring.fade_in(FADE_DELAY);
-        ring.fade_out(FADE_DELAY);
+        ring.fade_in(FADE_DELAY, get_button_pressed_atomic);
+        ring.fade_out(FADE_DELAY, get_button_pressed_atomic);
         break;
     default:
         ring.off();
