@@ -188,6 +188,49 @@ public:
         }
     }
 
+    void fade_carousel(
+        unsigned long delay_ms,
+        uint8_t max_brightness)
+    {
+        fade_carousel(255, 255, 255, delay_ms, max_brightness, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void fade_carousel(
+        unsigned long delay_ms,
+        uint8_t max_brightness,
+        bool (*stop_predicate)())
+    {
+        fade_carousel(255, 255, 255, delay_ms, max_brightness, stop_predicate);
+    }
+
+    void fade_carousel(
+        uint8_t red,
+        uint8_t green,
+        uint8_t blue,
+        unsigned long delay_ms,
+        uint8_t max_brightness,
+        bool (*stop_predicate)())
+    {
+        off();
+
+        uint8_t brightness_step = max_brightness / num_pixels_;
+
+        for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
+        {
+            fill(pixel, red, green, blue, (pixel + 1) * brightness_step);
+            step_delay(delay_ms, 10, stop_predicate);
+        }
+
+        for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
+        {
+            fill(pixel, 0, 0, 0);
+            step_delay(delay_ms, 10, stop_predicate);
+        }
+    }
+
     void fill_all(
         uint8_t red,
         uint8_t green,

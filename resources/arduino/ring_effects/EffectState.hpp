@@ -14,7 +14,8 @@ enum EffectState : uint8_t
     OFF_STATE = 0,
     CAROUSEL_STATE = 1,
     BLINK_STATE = 2,
-    FADE_STATE = 3
+    FADE_STATE = 3,
+    FADE_CAROUSEL_STATE = 4
 };
 
 String print_effect_state(EffectState& state)
@@ -33,6 +34,9 @@ String print_effect_state(EffectState& state)
         break;
     case ephemera::alpha::EffectState::FADE_STATE:
         ret = "FADE_STATE";
+        break;
+    case ephemera::alpha::EffectState::FADE_CAROUSEL_STATE:
+        ret = "FADE_CAROUSEL_STATE";
         break;
     default:
         ret = "INVALID_STATE";
