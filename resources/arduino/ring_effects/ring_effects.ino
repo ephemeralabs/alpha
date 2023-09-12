@@ -141,11 +141,11 @@ void loop()
         ring.carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::BLINK_STATE:
-        ring.blink(BLINK_DELAY, get_button_pressed_atomic);
+        ring.blink(BLINK_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::FADE_STATE:
-        ring.fade_in(FADE_DELAY, get_button_pressed_atomic);
-        ring.fade_out(FADE_DELAY, get_button_pressed_atomic);
+        ring.fade_in(FADE_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
+        ring.fade_out(FADE_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::FADE_CAROUSEL_STATE:
         ring.fade_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
