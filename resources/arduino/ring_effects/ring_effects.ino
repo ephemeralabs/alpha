@@ -95,6 +95,9 @@ void update_effect_state()
         effect_state = ephemera::alpha::EffectState::FADE_CAROUSEL_STATE;
         break;
     case ephemera::alpha::EffectState::FADE_CAROUSEL_STATE:
+        effect_state = ephemera::alpha::EffectState::INCREMENTAL_CAROUSEL_STATE;
+        break;
+    case ephemera::alpha::EffectState::INCREMENTAL_CAROUSEL_STATE:
         effect_state = ephemera::alpha::EffectState::OFF_STATE;
         break;
     default:
@@ -135,7 +138,7 @@ void loop()
         ring.off();
         break;
     case ephemera::alpha::EffectState::CAROUSEL_STATE:
-        ring.carousel(CAROUSEL_DELAY, get_button_pressed_atomic);
+        ring.carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::BLINK_STATE:
         ring.blink(BLINK_DELAY, get_button_pressed_atomic);
@@ -146,6 +149,9 @@ void loop()
         break;
     case ephemera::alpha::EffectState::FADE_CAROUSEL_STATE:
         ring.fade_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
+        break;
+    case ephemera::alpha::EffectState::INCREMENTAL_CAROUSEL_STATE:
+        ring.incremental_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, 10, get_button_pressed_atomic);
         break;
     default:
         ring.off();

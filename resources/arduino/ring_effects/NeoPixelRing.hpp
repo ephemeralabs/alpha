@@ -46,9 +46,10 @@ public:
     }
 
     void carousel(
-        unsigned long delay_ms)
+        unsigned long delay_ms,
+        uint8_t brightness)
     {
-        carousel(255, 255, 255, delay_ms, []() -> bool
+        carousel(255, 255, 255, delay_ms, brightness, []() -> bool
             {
                 return false;
             });
@@ -56,9 +57,10 @@ public:
 
     void carousel(
         unsigned long delay_ms,
+        uint8_t brightness,
         bool (*stop_predicate)())
     {
-        carousel(255, 255, 255, delay_ms, stop_predicate);
+        carousel(255, 255, 255, delay_ms, brightness, stop_predicate);
     }
 
     void carousel(
@@ -66,19 +68,20 @@ public:
         uint8_t green,
         uint8_t blue,
         unsigned long delay_ms,
+        uint8_t brightness,
         bool (*stop_predicate)())
     {
         off();
 
         for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
         {
-            fill(pixel, red, green, blue);
+            fill(pixel, red, green, blue, brightness);
             step_delay(delay_ms, 10, stop_predicate);
         }
 
         for(auto pixel = 0; pixel < num_pixels_ && !(*stop_predicate)(); pixel++)
         {
-            fill(pixel, 0, 0, 0);
+            fill(pixel, 0, 0, 0, brightness);
             step_delay(delay_ms, 10, stop_predicate);
         }
     }
@@ -228,6 +231,48 @@ public:
         {
             fill(pixel, 0, 0, 0);
             step_delay(delay_ms, 10, stop_predicate);
+        }
+    }
+
+    void incremental_carousel(
+        unsigned long delay_ms,
+        uint8_t max_brightness,
+        uint8_t loops)
+    {
+        incremental_carousel(255, 255, 255, delay_ms, max_brightness, loops, []() -> bool
+            {
+                return false;
+            });
+    }
+
+    void incremental_carousel(
+        unsigned long delay_ms,
+        uint8_t max_brightness,
+        uint8_t loops,
+        bool (*stop_predicate)())
+    {
+        incremental_carousel(255, 255, 255, delay_ms, max_brightness, loops, stop_predicate);
+    }
+
+    void incremental_carousel(
+        uint8_t red,
+        uint8_t green,
+        uint8_t blue,
+        unsigned long delay_ms,
+        uint8_t max_brightness,
+        uint8_t loops,
+        bool (*stop_predicate)())
+    {
+        uint8_t brightness_step = max_brightness / loops;
+
+        for(auto loop = 0; loop < loops && !(*stop_predicate)(); loop++)
+        {
+            carousel(red, green, blue, delay_ms,  (loop + 1) * brightness_step, stop_predicate);
+        }
+
+        for(auto loop = loops; loop != 0 && !(*stop_predicate)(); loop--)
+        {
+            carousel(red, green, blue, delay_ms,  loop * brightness_step, stop_predicate);
         }
     }
 
