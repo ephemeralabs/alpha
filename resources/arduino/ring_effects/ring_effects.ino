@@ -62,6 +62,7 @@ constexpr size_t EFFECT_ITERATIONS = 3;
 constexpr unsigned long CAROUSEL_DELAY = 100;
 constexpr unsigned long BLINK_DELAY = 800;
 constexpr unsigned long FADE_DELAY = 3000;
+constexpr uint8_t INCREMENTAL_CAROUSEL_LOOPS = 5;
 
 /* Button config */
 constexpr int16_t BUTTON_PIN = 2;
@@ -151,7 +152,7 @@ void loop()
         ring.fade_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, get_button_pressed_atomic);
         break;
     case ephemera::alpha::EffectState::INCREMENTAL_CAROUSEL_STATE:
-        ring.incremental_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, 10, get_button_pressed_atomic);
+        ring.incremental_carousel(CAROUSEL_DELAY, MAX_BRIGHTNESS, INCREMENTAL_CAROUSEL_LOOPS, get_button_pressed_atomic);
         break;
     default:
         ring.off();
