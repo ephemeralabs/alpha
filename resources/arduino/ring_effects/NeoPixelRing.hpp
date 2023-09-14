@@ -343,7 +343,7 @@ protected:
         while (remaining_delay > 0 && !(*stop_predicate)())
         {
             delay(remaining_delay >= delay_step ? delay_step : remaining_delay);
-            remaining_delay = remaining_delay - delay_step;
+            remaining_delay = remaining_delay >= delay_step ? remaining_delay - delay_step : 0;
         }
     }
 

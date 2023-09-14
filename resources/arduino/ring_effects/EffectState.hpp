@@ -19,7 +19,7 @@ enum EffectState : uint8_t
     INCREMENTAL_CAROUSEL_STATE = 5
 };
 
-String print_effect_state(EffectState& state)
+String print_effect_state(const EffectState& state)
 {
     String ret;
     switch (state)
