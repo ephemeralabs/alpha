@@ -73,7 +73,7 @@ ephemera::alpha::NeoPixelRing ring(NUM_PIXELS, NEOPIXEL_PIN, MAX_BRIGHTNESS);
 
 /* Button config */
 constexpr int8_t BUTTON_PIN = 2;
-constexpr uint8_t BUTTON_MIN_DIFF_MS = 500;
+constexpr uint8_t BUTTON_MIN_DIFF_MS = 1000;
 ephemera::alpha::EffectState effect_state = ephemera::alpha::EffectState::OFF_STATE;
 volatile int prev_pressed = 0;
 volatile bool button_pressed = false;
@@ -95,7 +95,7 @@ unsigned long effect_delays_ms[NUM_EFFECTS] = {
         800,   // BLINK_STATE
         2000,  // FADE_STATE
         1000,  // FADE_CAROUSEL_STATE
-        50,   // INCREMENTAL_CAROUSEL_STATE
+        150,   // INCREMENTAL_CAROUSEL_STATE
 };
 constexpr unsigned long max_effect_delays_ms[NUM_EFFECTS] = {
         0,     // OFF_STATE  (not used)
